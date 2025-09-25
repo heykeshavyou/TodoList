@@ -5,13 +5,16 @@ namespace TodoList
 {
     public partial class MainPage : ContentPage
     {
-
-        public MainPage(TodoRepository todoRepository)
+        private readonly HomeViewModel _viewModel;
+        public MainPage(HomeViewModel vm)
         {
             InitializeComponent();
-            BindingContext = new HomeViewModel(todoRepository); 
+            BindingContext = _viewModel = vm; 
         }
 
-
+        protected override async void OnAppearing()
+        {
+            await _viewModel.OnAppearing();
+        }
     }
 }

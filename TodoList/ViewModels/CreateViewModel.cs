@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 using TodoList.Models;
@@ -9,6 +10,8 @@ namespace TodoList.ViewModels
 {
     public class CreateViewModel: BindableObject
     {
+        public List<string> PriorityData { get; set; } = new List<string>() { "Normal", "High", "Low" };
+        public DateTime TodayDate { get; set; } =DateTime.Today;
         private readonly TodoRepository _todoRepository;
         private string _title;
         public string Title
@@ -36,8 +39,8 @@ namespace TodoList.ViewModels
                 }
             }
         }
-        private Priority _priority;
-        public Priority Priority
+        private string _priority;
+        public string PriorityText
         {
             get => _priority;
             set
@@ -58,6 +61,19 @@ namespace TodoList.ViewModels
                 if (_dueDate != value)
                 {
                     _dueDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private TimeSpan? _dueTime;
+        public TimeSpan? DueTime
+        {
+            get => _dueTime;
+            set
+            {
+                if (_dueTime != value)
+                {
+                    _dueTime = value;
                     OnPropertyChanged();
                 }
             }
@@ -87,8 +103,9 @@ namespace TodoList.ViewModels
             {
                 Title = _title,
                 Description = _description,
-                Priority = _priority,
+                Priority = (Priority)Enum.Parse(typeof(Priority),_priority),
                 DueDate = _dueDate,
+                DueTime = _dueTime,
                 IsCompleted = _isCompleted,
                 CreatedAt = DateTime.Now
             };

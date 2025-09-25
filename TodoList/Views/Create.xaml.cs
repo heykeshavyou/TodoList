@@ -5,9 +5,14 @@ namespace TodoList.Views;
 
 public partial class Create : ContentPage
 {
-	public Create(TodoRepository todoRepository)
+	public Create(CreateViewModel vm)
 	{
 		InitializeComponent();
-				BindingContext = new CreateViewModel(todoRepository);
+		BindingContext = vm;
+    }
+
+    private void TimePicker_TimeSelected(object sender, TimeChangedEventArgs e)
+    {
+
     }
 }

@@ -3,17 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TodoList.MainPage"
              xmlns:HM="clr-namespace:TodoList.ViewModels"
+             xmlns:models="clr-namespace:TodoList.Models"
              x:DataType="HM:HomeViewModel"
+             Background="white" NavigationPage.HasNavigationBar="False"
              >
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Button Text="+" Command="{Binding GotoCreate}">
-               
-            </Button>
-        </VerticalStackLayout>
-    </ScrollView>
+    <Grid
+        RowDefinitions="*,auto"
+        Padding="10,0">
+        <ScrollView>
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding TodoItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TodoItem">
+                            <Border Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                <StackLayout>
+                                    <Grid ColumnDefinitions="auto,*">
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Normal">
+                                                <Setter Property="Background" Value="#24A19C"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Low">
+                                                <Setter Property="Background" Value="#DFD8F7"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="High">
+                                                <Setter Property="Background" Value="#EA4335"/>
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Image Grid.Column="0" Source="flag.svg" />
+                                        <Label Grid.Column="1" TextColor="White"  Text="{Binding Title}"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Button Text="+" CornerRadius="50" Padding="0" 
+                        WidthRequest="50" HeightRequest="50"
+                        Margin="20,30"
+                        Background="#24A19C"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="30" Command="{Binding GotoCreate,Mode=TwoWay}"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"/>
+    </Grid>
 
 </ContentPage>

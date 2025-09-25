@@ -15,6 +15,7 @@ namespace TodoList.Models
         public Priority Priority { get; set; }  
         public DateTime CreatedAt { get; set; } = DateTime.Now; 
         public DateTime? DueDate { get; set; } 
+        public TimeSpan? DueTime { get; set; } 
         public bool IsCompleted { get; set; } 
     }
 

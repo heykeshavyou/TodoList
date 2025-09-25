@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoList.CustomControl.CustomEntry"
+             x:Name="customEntry">
+    <VerticalStackLayout Padding="10,5">
+        <Label 
+            Text="{Binding Source={x:Reference customEntry},Path=LabelText}" 
+            TextColor="Black" 
+            FontSize="20"
+            FontAttributes="Bold" 
+            Margin="0,0,0,5">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+
+            </Label.GestureRecognizers>
+        </Label>
+        <Border Stroke="#24A19C"  StrokeShape="RoundRectangle 10">
+            <Entry
+               Text="{Binding Source={x:Reference customEntry},Path=EntryText}"
+               Placeholder="{Binding Source={x:Reference customEntry},Path=LabelText}"
+               TextColor="Black"
+               FontSize="16"
+               Margin="5,0"
+               HeightRequest="40"
+               x:Name="EntryField"
+               VerticalOptions="Center"/>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

@@ -15,12 +15,16 @@ namespace TodoList.ViewModels
         {
             _todoRepository = todoRepository;
             GotoCreate = new Command(Goto);
-            TodoItems =  _todoRepository.GetItemsAsync().Result;
+        }
+
+        public async Task OnAppearing()
+        {
+            TodoItems = await _todoRepository.GetItemsAsync();
 
         }
-        public ICommand GotoCreate;
+        public ICommand GotoCreate { get; }
 
-        private List<TodoItem> TodoItems
+        public List<TodoItem> TodoItems
         {
             get => _todoItems;
             set
@@ -37,8 +41,9 @@ namespace TodoList.ViewModels
         private List<TodoItem> _todoItems;
         private void Goto()
         {
-           
-            App.Current.MainPage.Navigation.PushAsync(new Create(_todoRepository));
+           var create = IPlatformApplication.Current.Services.GetService<Create>();
+
+            App.Current.MainPage.Navigation.PushAsync(create);
         }
     }
 }

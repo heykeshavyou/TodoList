@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
 using TodoList.Repositry;
 using TodoList.ViewModels;
 using TodoList.Views;
@@ -26,7 +27,35 @@ namespace TodoList
             // Pages
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Create>();
-
+            PickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+                #if ANDROID
+                handler.PlatformView.Background = null; // removes underline
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+            });
+            TimePickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null; // removes underline
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+            });
+            DatePickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null; // removes underline
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+            });
+            EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null; // removes underline
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                handler.PlatformView.TextCursorDrawable?.SetTint(Android.Graphics.Color.ParseColor("#24A19C"));
+#endif
+            });
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

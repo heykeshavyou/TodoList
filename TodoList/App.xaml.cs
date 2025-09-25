@@ -4,12 +4,11 @@ namespace TodoList
 {
     public partial class App : Application
     {
-        private readonly TodoRepository _todoRepository;
-        public App(TodoRepository todoRepository)
+        public App()
         {
             InitializeComponent();
-            _todoRepository = todoRepository;
-            MainPage =new MainPage(_todoRepository);
+            var mainPage = IPlatformApplication.Current.Services.GetService<MainPage>();
+            MainPage = new NavigationPage(mainPage);
         }
     }
 }
