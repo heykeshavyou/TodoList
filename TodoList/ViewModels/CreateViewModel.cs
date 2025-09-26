@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
 
@@ -95,9 +91,9 @@ namespace TodoList.ViewModels
         public CreateViewModel(TodoRepository todoRepository)
         {
             _todoRepository = todoRepository;
-            SaveCommand = new Command(OnSave);
+            SaveCommand = new Command(()=> OnSave());
         }
-        private void OnSave()
+        private async Task OnSave()
         {
             var newItem = new TodoItem
             {
@@ -105,11 +101,11 @@ namespace TodoList.ViewModels
                 Description = _description,
                 Priority = (Priority)Enum.Parse(typeof(Priority),_priority),
                 DueDate = _dueDate,
-                DueTime = _dueTime,
+                DueTime = DateTime.Now.Date.Add((TimeSpan)_dueTime),
                 IsCompleted = _isCompleted,
                 CreatedAt = DateTime.Now
             };
-            _todoRepository.SaveItemAsync(newItem);
+            await _todoRepository.SaveItemAsync(newItem);
             App.Current.MainPage.Navigation.PopAsync();
         }
     }

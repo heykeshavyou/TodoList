@@ -36,6 +36,7 @@
                 Margin="5,0"
                 TextColor="Black"
                 Title="Select Priority"
+                    TitleColor="Gray"
                 SelectedItem="{Binding PriorityText, Mode=TwoWay}"
                 ItemsSource="{Binding PriorityData}">
                 </Picker>

@@ -5,36 +5,107 @@
              xmlns:HM="clr-namespace:TodoList.ViewModels"
              xmlns:models="clr-namespace:TodoList.Models"
              x:DataType="HM:HomeViewModel"
-             Background="white" NavigationPage.HasNavigationBar="False"
+             Background="#ffffff" NavigationPage.HasNavigationBar="False"
              >
 
     <Grid
         RowDefinitions="*,auto"
         Padding="10,0">
         <ScrollView>
-            <VerticalStackLayout>
-                <CollectionView ItemsSource="{Binding TodoItems}">
-                    <CollectionView.ItemTemplate>
+            <VerticalStackLayout >
+                <Label Text="Today's" TextColor="Black" FontSize="30" Margin="10" FontAttributes="Bold"/>
+                <ActivityIndicator IsVisible="{Binding ShowLoading}" Color="#24A19C" IsRunning="{Binding ShowLoading}" />
+                <CollectionView IsVisible="{Binding ShowList}" ItemsSource="{Binding TodoItems}" >
+                    <CollectionView.ItemTemplate>                        
                         <DataTemplate x:DataType="models:TodoItem">
-                            <Border Stroke="Transparent" StrokeShape="RoundRectangle 10">
-                                <StackLayout>
-                                    <Grid ColumnDefinitions="auto,*">
-                                        <Grid.Triggers>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Normal">
-                                                <Setter Property="Background" Value="#24A19C"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Low">
-                                                <Setter Property="Background" Value="#DFD8F7"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="High">
-                                                <Setter Property="Background" Value="#EA4335"/>
-                                            </DataTrigger>
-                                        </Grid.Triggers>
-                                        <Image Grid.Column="0" Source="flag.svg" />
-                                        <Label Grid.Column="1" TextColor="White"  Text="{Binding Title}"/>
-                                    </Grid>
-                                </StackLayout>
-                            </Border>
+                            <SwipeView>
+                                <SwipeView.RightItems Padding="10">
+                                    <SwipeItems>
+                                        <SwipeItemView >
+                                            <Grid>
+                                                <ImageButton  Command="{Binding Source={RelativeSource AncestorType={x:Type HM:HomeViewModel}},Path=BindingContext.Delete}" CommandParameter="{Binding Id}" WidthRequest="40" VerticalOptions="Center"  Source="trash.svg"/>
+                                            </Grid>
+                                        </SwipeItemView>
+                                        <SwipeItemView >
+                                            <Grid>
+                                                <Image WidthRequest="40" VerticalOptions="Center"  Source="pencil.svg"/>
+                                            </Grid>
+                                        </SwipeItemView>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Grid Padding="10" >
+                                    <Border  Stroke="Transparent"  Background="White" StrokeThickness="0"   StrokeShape="RoundRectangle 10" >
+                                        <Border.Shadow>
+                                            <Shadow Brush="Gray"
+                                                    Offset="0,1"
+                                                    Radius="5"
+                                                    Opacity="0.7" />
+                                        </Border.Shadow>
+                                        <StackLayout>
+                                            <Grid ColumnDefinitions="auto,*">
+                                                <Grid.Triggers>
+                                                    <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Normal">
+                                                        <Setter Property="Background" Value="#24A19C"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="Low">
+                                                        <Setter Property="Background" Value="#DFD8F7"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Grid" Binding="{Binding Priority}" Value="High">
+                                                        <Setter Property="Background" Value="#EA4335"/>
+                                                    </DataTrigger>
+                                                </Grid.Triggers>
+                                                <Image Grid.Column="0" Source="flag.svg" Margin="10,0,0,0" />
+                                                <Label Grid.Column="1" TextColor="White" Padding="10"  Text="{Binding Title}"/>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="auto,*" Padding="15">
+                                                <Grid>
+                                                    <BoxView Grid.Column="0" HeightRequest="25" WidthRequest="25" CornerRadius="50">
+                                                        <BoxView.Triggers>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Normal">
+                                                                <Setter Property="Background" Value="#24A19C"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Low">
+                                                                <Setter Property="Background" Value="#DFD8F7"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="High">
+                                                                <Setter Property="Background" Value="#EA4335"/>
+                                                            </DataTrigger>
+                                                        </BoxView.Triggers>
+                                                    </BoxView>
+                                                    <BoxView Grid.Column="0" HeightRequest="20" WidthRequest="20" Background="White" CornerRadius="50">
+
+                                                    </BoxView>
+                                                    <BoxView Grid.Column="0" HeightRequest="15" WidthRequest="15" CornerRadius="50">
+                                                        <BoxView.Triggers>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Normal">
+                                                                <Setter Property="Background" Value="#24A19C"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Low">
+                                                                <Setter Property="Background" Value="#DFD8F7"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="High">
+                                                                <Setter Property="Background" Value="#EA4335"/>
+                                                            </DataTrigger>
+                                                        </BoxView.Triggers>
+                                                    </BoxView>
+                                                </Grid>
+
+                                                <Label Margin="10,0" Grid.Column="1" TextColor="Black" VerticalTextAlignment="Center" FontSize="14" Text="{Binding Description}">
+
+                                                </Label>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" Padding="10,0,10,10">
+                                                <BoxView Grid.ColumnSpan="2" Grid.Row="0" HeightRequest="0.5" />
+                                                <Grid ColumnSpacing="5" ColumnDefinitions="auto,*" Grid.Row="1" Margin="0,10,0,0" Grid.Column="0">
+                                                    <Image Source="alarm.svg" HorizontalOptions="Start" Grid.Column="0"/>
+                                                    <Label HorizontalOptions="Start" TextColor="#EA4335" Grid.Column="1" Margin="0,0,0,0" FontSize="14" Text="{Binding DueTime, StringFormat='{0: hh:mm tt}'}"/>
+                                                </Grid>
+                                                <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Gray" Margin="0,10,0,0" FontSize="14" Text="{Binding DueDate, StringFormat='{0:ddd, dd MMM yyyy h:mm tt}'}"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </Border>
+                                </Grid>
+                            </SwipeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

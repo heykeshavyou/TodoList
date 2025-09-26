@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
 using TodoList.Views;
@@ -11,16 +8,43 @@ namespace TodoList.ViewModels
     public class HomeViewModel : BindableObject
     {
         private readonly TodoRepository _todoRepository;
+        private bool _showLoading = true;
+        private bool _showList = false;
         public HomeViewModel(TodoRepository todoRepository)
         {
             _todoRepository = todoRepository;
             GotoCreate = new Command(Goto);
+            Delete = new Command<int>(async (int id)=> await DeleteTodo(id));
         }
-
+        public bool ShowLoading
+        {
+            get => _showLoading;
+            set
+            {
+                if (_showLoading != value)
+                {
+                    _showLoading = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public bool ShowList
+        {
+            get => _showList;
+            set
+            {
+                if (_showList != value)
+                {
+                    _showList = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public async Task OnAppearing()
         {
             TodoItems = await _todoRepository.GetItemsAsync();
-
+            ShowList=true;
+            ShowLoading = false;
         }
         public ICommand GotoCreate { get; }
 
@@ -32,9 +56,18 @@ namespace TodoList.ViewModels
                 if (_todoItems != value)
                 {
                     _todoItems = value;
-                    _todoItems = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+        public ICommand Delete { get; }
+        private async Task DeleteTodo(int id)
+        {
+            var item = await _todoRepository.GetItemAsync(id);
+            if (item != null)
+            {
+                await _todoRepository.DeleteItemAsync(item);
+                TodoItems = await _todoRepository.GetItemsAsync();
             }
         }
 
