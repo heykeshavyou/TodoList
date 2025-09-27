@@ -14,7 +14,7 @@ namespace TodoList.ViewModels
         {
             _todoRepository = todoRepository;
             GotoCreate = new Command(Goto);
-            Delete = new Command<int>(async (int id)=> await DeleteTodo(id));
+            Delete = new Command<string>(DeleteTodo);
         }
         public bool ShowLoading
         {
@@ -61,14 +61,15 @@ namespace TodoList.ViewModels
             }
         }
         public ICommand Delete { get; }
-        private async Task DeleteTodo(int id)
+        private void DeleteTodo(string id)
         {
-            var item = await _todoRepository.GetItemAsync(id);
-            if (item != null)
-            {
-                await _todoRepository.DeleteItemAsync(item);
-                TodoItems = await _todoRepository.GetItemsAsync();
-            }
+            //var todoId = int.Parse(id);
+            //var item = await _todoRepository.GetItemAsync(todoId);
+            //if (item != null)
+            //{
+            //    await _todoRepository.DeleteItemAsync(item);
+            //    TodoItems = await _todoRepository.GetItemsAsync();
+            //}
         }
 
         private List<TodoItem> _todoItems;

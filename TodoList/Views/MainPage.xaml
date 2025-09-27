@@ -5,6 +5,7 @@
              xmlns:HM="clr-namespace:TodoList.ViewModels"
              xmlns:models="clr-namespace:TodoList.Models"
              x:DataType="HM:HomeViewModel"
+             x:Name="homepage"
              Background="#ffffff" NavigationPage.HasNavigationBar="False"
              >
 
@@ -21,9 +22,15 @@
                             <SwipeView>
                                 <SwipeView.RightItems Padding="10">
                                     <SwipeItems>
-                                        <SwipeItemView >
+                                        <SwipeItemView
+                                            >
                                             <Grid>
-                                                <ImageButton  Command="{Binding Source={RelativeSource AncestorType={x:Type HM:HomeViewModel}},Path=BindingContext.Delete}" CommandParameter="{Binding Id}" WidthRequest="40" VerticalOptions="Center"  Source="trash.svg"/>
+                                                <Image WidthRequest="40" VerticalOptions="Center"  Source="trash.svg">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer 
+                                                            Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Delete ,Mode=TwoWay}" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                             </Grid>
                                         </SwipeItemView>
                                         <SwipeItemView >
@@ -120,6 +127,7 @@
                         FontSize="30" Command="{Binding GotoCreate,Mode=TwoWay}"
                         HorizontalOptions="End"
                         VerticalOptions="End"/>
+        
     </Grid>
 
 </ContentPage>
