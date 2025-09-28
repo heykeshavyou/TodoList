@@ -23,10 +23,12 @@ namespace TodoList
             // ViewModels
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<CreateViewModel>();
+            builder.Services.AddTransient<EditViewModel>();
 
             // Pages
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Create>();
+            builder.Services.AddTransient<Edit>();
             PickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
             {
                 #if ANDROID

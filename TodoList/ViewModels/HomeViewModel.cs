@@ -16,6 +16,7 @@ namespace TodoList.ViewModels
             _todoRepository = todoRepository;
             GotoCreate = new Command(Goto);
             Delete = new Command<int>(DeleteTodo);
+            GotoEdit = new Command<int>(Goto);
         }
         public bool ShowLoading
         {
@@ -47,6 +48,7 @@ namespace TodoList.ViewModels
             ShowList = true;
             ShowLoading = false;
         }
+        public ICommand GotoEdit { get; }
         public ICommand GotoCreate { get; }
 
         public List<TodoItem> TodoItems
@@ -62,6 +64,7 @@ namespace TodoList.ViewModels
             }
         }
         public ICommand Delete { get; }
+
         private async void DeleteTodo(int id)
         {
             var item = await _todoRepository.GetItemAsync(id);
@@ -82,6 +85,12 @@ namespace TodoList.ViewModels
             var create = IPlatformApplication.Current.Services.GetService<Create>();
 
             App.Current.MainPage.Navigation.PushAsync(create);
+        }
+        private void Goto(int id)
+        {
+            var edit = IPlatformApplication.Current.Services.GetService<Edit>();
+            edit?.Id = id;
+            App.Current.MainPage.Navigation.PushAsync(edit);
         }
     }
 }
