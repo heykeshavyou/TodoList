@@ -28,7 +28,7 @@
                                                 <Image WidthRequest="40" VerticalOptions="Center"  Source="trash.svg">
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer 
-                                                            Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Delete ,Mode=TwoWay}" />
+                                                            Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Delete ,Mode=TwoWay}" CommandParameter="{Binding Id}" />
                                                     </Image.GestureRecognizers>
                                                 </Image>
                                             </Grid>
@@ -107,7 +107,7 @@
                                                     <Image Source="alarm.svg" HorizontalOptions="Start" Grid.Column="0"/>
                                                     <Label HorizontalOptions="Start" TextColor="#EA4335" Grid.Column="1" Margin="0,0,0,0" FontSize="14" Text="{Binding DueTime, StringFormat='{0: hh:mm tt}'}"/>
                                                 </Grid>
-                                                <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Gray" Margin="0,10,0,0" FontSize="14" Text="{Binding DueDate, StringFormat='{0:ddd, dd MMM yyyy h:mm tt}'}"/>
+                                                <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Gray" Margin="0,10,0,0" FontSize="14" Text="{Binding DueDate, StringFormat='{0:ddd, dd MMM yyyy}'}"/>
                                             </Grid>
                                         </StackLayout>
                                     </Border>
