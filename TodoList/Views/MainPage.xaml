@@ -7,6 +7,7 @@
              x:DataType="HM:HomeViewModel"
              x:Name="homepage"
              Background="#ffffff" NavigationPage.HasNavigationBar="False"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              >
 
     <Grid
@@ -14,33 +15,115 @@
         Padding="10,0">
         <ScrollView>
             <VerticalStackLayout >
-                <Label Text="Today's" TextColor="Black" FontSize="30" Margin="10" FontAttributes="Bold"/>
-                <ActivityIndicator IsVisible="{Binding ShowLoading}" Color="#24A19C" IsRunning="{Binding ShowLoading}" />
-                <CollectionView IsVisible="{Binding ShowList}" ItemsSource="{Binding TodoItems}" >
-                    <CollectionView.ItemTemplate>                        
+                <Label
+                    Text="Today's"
+                    TextColor="Black" 
+                    FontSize="30" 
+                    Margin="10"
+                    FontAttributes="Bold"/>
+                <ActivityIndicator
+                    IsVisible="{Binding ShowLoading}"
+                    Color="#24A19C" 
+                    IsRunning="{Binding ShowLoading}" />
+                <CollectionView 
+                    IsVisible="{Binding ShowLoading ,Converter={toolkit:InvertedBoolConverter}}" 
+                    ItemsSource="{Binding TodoItems}" >
+                    <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:TodoItem">
                             <SwipeView>
                                 <SwipeView.RightItems Padding="10">
                                     <SwipeItems>
                                         <SwipeItemView
                                             >
-                                            <Grid>
+                                            <Grid BackgroundColor="White" Padding="5">
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer 
                                                         Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Delete ,Mode=TwoWay}"
                                                         CommandParameter="{Binding Id}" />
                                                 </Grid.GestureRecognizers>
-                                                <Image WidthRequest="40" VerticalOptions="Center"  Source="trash.svg"/>
+                                                <Image 
+                                                    ZIndex="1"
+                                                    WidthRequest="40"
+                                                    ToolTipProperties.Text="Delete"
+                                                    VerticalOptions="Center" 
+                                                    Source="trash.svg"/>
+                                                <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                                                    <BoxView.Shadow>
+                                                        <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                                                    </BoxView.Shadow>
+                                                </BoxView>
                                             </Grid>
                                         </SwipeItemView>
-                                        <SwipeItemView >
-                                            <Grid>
+                                        <SwipeItemView IsVisible="{Binding IsCompleted, Converter={toolkit:InvertedBoolConverter}}"  >
+                                            <Grid Padding="5" Margin="5">
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer 
                                                         Command="{Binding Source={x:Reference homepage}, Path=BindingContext.GotoEdit ,Mode=TwoWay}"
                                                         CommandParameter="{Binding Id}" />
                                                 </Grid.GestureRecognizers>
-                                                <Image WidthRequest="40" VerticalOptions="Center"  Source="pencil.svg"/>
+                                                <Image 
+                                                    ToolTipProperties.Text="Edit"
+                                                    WidthRequest="40"
+                                                    ZIndex="1"
+                                                    VerticalOptions="Center" 
+                                                    Source="pencil.svg"/>
+                                                <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                                                    <BoxView.Shadow>
+                                                        <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                                                    </BoxView.Shadow>
+                                                </BoxView>
+                                            </Grid>
+                                        </SwipeItemView>
+                                        <SwipeItemView IsVisible="{Binding IsCompleted, Converter={toolkit:InvertedBoolConverter}}" >
+                                            <Grid Padding="5" Margin="5,5,0,5">
+
+                                                <Image 
+                                                    ToolTipProperties.Text="Mark Done"
+                                                    WidthRequest="30"
+                                                    ZIndex="1"
+                                                    VerticalOptions="Center" 
+                                                    Source="check.svg">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer 
+                                                            Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Mark ,Mode=TwoWay}"
+                                                            CommandParameter="{Binding Id}" />
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                                <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                                                    <BoxView.Shadow>
+                                                        <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                                                    </BoxView.Shadow>
+                                                </BoxView>
                                             </Grid>
                                         </SwipeItemView>
                                     </SwipeItems>
@@ -57,7 +140,7 @@
                                                     Opacity="0.7" />
                                         </Border.Shadow>
                                         <StackLayout>
-                                            <Grid ColumnDefinitions="auto,*">
+                                            <Grid ColumnDefinitions="*,*">
                                                 <Grid.Triggers>
                                                     <DataTrigger 
                                                         TargetType="Grid" 
@@ -84,15 +167,21 @@
                                                             Value="#EA4335"/>
                                                     </DataTrigger>
                                                 </Grid.Triggers>
-                                                <Image
-                                                    Grid.Column="0" 
-                                                    Source="flag.svg"
-                                                    Margin="10,0,0,0" />
-                                                <Label 
-                                                    Grid.Column="1" 
-                                                    TextColor="White"
-                                                    Padding="10"
-                                                    Text="{Binding Title}"/>
+                                                <Grid Grid.Column="0" ColumnDefinitions="auto,*">
+                                                    <Image
+                                                        Grid.Column="0" 
+                                                        Source="flag.svg"
+                                                        Margin="10,0,0,0" />
+                                                    <Label 
+                                                        Grid.Column="1" 
+                                                        TextColor="White"
+                                                        Padding="10"
+                                                        Text="{Binding Title}"/>
+                                                </Grid>
+                                                <Grid  Grid.Column="1">
+                                                          <Image IsVisible="{Binding IsCompleted}" VerticalOptions="Center" HorizontalOptions="End" Margin="10" WidthRequest="20" Source="checkw.svg"/>
+
+                                                </Grid>
                                             </Grid>
                                             <Grid 
                                                 ColumnDefinitions="auto,*"
@@ -183,7 +272,7 @@
                         FontSize="30" Command="{Binding GotoCreate,Mode=TwoWay}"
                         HorizontalOptions="End"
                         VerticalOptions="End"/>
-        
+
     </Grid>
 
 </ContentPage>

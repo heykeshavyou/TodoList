@@ -10,13 +10,13 @@ namespace TodoList.ViewModels
     {
         private readonly TodoRepository _todoRepository;
         private bool _showLoading = true;
-        private bool _showList = false;
         public HomeViewModel(TodoRepository todoRepository)
         {
             _todoRepository = todoRepository;
             GotoCreate = new Command(Goto);
             Delete = new Command<int>(DeleteTodo);
             GotoEdit = new Command<int>(Goto);
+            Mark = new Command<int>(MarkTodo);
         }
         public bool ShowLoading
         {
@@ -30,26 +30,12 @@ namespace TodoList.ViewModels
                 }
             }
         }
-        public bool ShowList
-        {
-            get => _showList;
-            set
-            {
-                if (_showList != value)
-                {
-                    _showList = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
         public async Task OnAppearing()
         {
             TodoItems = await _todoRepository.GetItemsAsync();
-            ShowList = true;
             ShowLoading = false;
         }
-        public ICommand GotoEdit { get; }
-        public ICommand GotoCreate { get; }
+        private List<TodoItem> _todoItems;
 
         public List<TodoItem> TodoItems
         {
@@ -63,8 +49,21 @@ namespace TodoList.ViewModels
                 }
             }
         }
-        public ICommand Delete { get; }
 
+        public ICommand GotoEdit { get; }
+        public ICommand GotoCreate { get; }
+        public ICommand Delete { get; }
+        public ICommand Mark { get; }
+        private async void MarkTodo(int id)
+        {
+            var item = await _todoRepository.GetItemAsync(id);
+            if (item != null)
+            {
+                item.IsCompleted = !item.IsCompleted;
+                await _todoRepository.SaveItemAsync(item);
+                TodoItems = await _todoRepository.GetItemsAsync();
+            }
+        }
         private async void DeleteTodo(int id)
         {
             var item = await _todoRepository.GetItemAsync(id);
@@ -78,8 +77,6 @@ namespace TodoList.ViewModels
                 }
             }
         }
-
-        private List<TodoItem> _todoItems;
         private void Goto()
         {
             var create = IPlatformApplication.Current.Services.GetService<Create>();
