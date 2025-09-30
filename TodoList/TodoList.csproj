@@ -67,6 +67,9 @@
 	  <MauiXaml Update="CustomControl\CustomEntry.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Datatemplates\TaskDataTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Create.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
