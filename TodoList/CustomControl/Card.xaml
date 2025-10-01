@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoList.CustomControl.Card" 
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" 
+             x:Name="card"
+             >
+
+<Grid >   
+        <SwipeView>
+            <SwipeView.RightItems Padding="10">
+                <SwipeItems>
+                    <SwipeItemView>
+                    <Grid BackgroundColor="White" Padding="5"
+                         >
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={x:Reference card}, Path=DeleteCommand ,Mode=TwoWay}"
+                                CommandParameter="{Binding Source={x:Reference card}, Path=Todo.Id }" />
+                        </Grid.GestureRecognizers>
+                        <Image 
+                                                    ZIndex="1"
+                                                    WidthRequest="40"
+                                                    ToolTipProperties.Text="Delete"
+                                                    VerticalOptions="Center" 
+                                                    Source="trash.svg">
+
+                        </Image>
+                        <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                            <BoxView.Shadow>
+                                <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                            </BoxView.Shadow>
+                        </BoxView>
+                    </Grid>
+                </SwipeItemView>
+                <SwipeItemView IsVisible="{Binding IsCompleted, Converter={toolkit:InvertedBoolConverter}}"  >
+                    <Grid Padding="5" Margin="5">
+
+                        <Image 
+                                                    ToolTipProperties.Text="Edit"
+                                                    WidthRequest="40"
+                                                    ZIndex="1"
+                                                    VerticalOptions="Center" 
+                                                    Source="pencil.svg">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                                            Command="{Binding Source={x:Reference card }, Path=BindingContext.GotoEdit ,Mode=TwoWay}"
+                                                            CommandParameter="{Binding Id}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                            <BoxView.Shadow>
+                                <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                            </BoxView.Shadow>
+                        </BoxView>
+                    </Grid>
+                </SwipeItemView>
+                <SwipeItemView IsVisible="{Binding IsCompleted, Converter={toolkit:InvertedBoolConverter}}" >
+                    <Grid Padding="5" Margin="5,5,0,5">
+
+                        <Image 
+                            ToolTipProperties.Text="Mark Done"
+                            WidthRequest="30"
+                            ZIndex="1"
+                            VerticalOptions="Center" 
+                            Source="check.svg">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                                            Command="{Binding Source={x:Reference homepage}, Path=BindingContext.Mark ,Mode=TwoWay}"
+                                                            CommandParameter="{Binding Id}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <BoxView 
+                                                    CornerRadius="50"
+                                                    BackgroundColor="White" 
+                                                    Color="White"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Center"
+                                                    HeightRequest="50" 
+                                                    WidthRequest="50">
+                            <BoxView.Shadow>
+                                <Shadow Brush="Gray"
+                                                                Offset="0,1"
+                                                                Radius="5"
+                                                                Opacity="0.7" />
+                            </BoxView.Shadow>
+                        </BoxView>
+                    </Grid>
+                </SwipeItemView>
+            </SwipeItems>
+        </SwipeView.RightItems>
+        <Grid Padding="10" >
+            <Border 
+                                        Stroke="Transparent"  
+                                        Background="White" StrokeThickness="0" 
+                                        StrokeShape="RoundRectangle 10" >
+                <Border.Shadow>
+                    <Shadow Brush="Gray"
+                                                    Offset="0,1"
+                                                    Radius="5"
+                                                    Opacity="0.7" />
+                </Border.Shadow>
+                <StackLayout>
+                    <Grid ColumnDefinitions="*,*">
+                        <Grid.Triggers>
+                            <DataTrigger 
+                                                        TargetType="Grid" 
+                                                        Binding="{Binding Priority}"
+                                                        Value="Normal">
+                                <Setter 
+                                                            Property="Background"
+                                                            Value="#24A19C"/>
+                            </DataTrigger>
+                            <DataTrigger 
+                                                        TargetType="Grid" 
+                                                        Binding="{Binding Priority}" 
+                                                        Value="Low">
+                                <Setter 
+                                                            Property="Background" 
+                                                            Value="#DFD8F7"/>
+                            </DataTrigger>
+                            <DataTrigger
+                                                        TargetType="Grid"
+                                                        Binding="{Binding Priority}"
+                                                        Value="High">
+                                <Setter 
+                                                            Property="Background"
+                                                            Value="#EA4335"/>
+                            </DataTrigger>
+                        </Grid.Triggers>
+                        <Grid Grid.Column="0" ColumnDefinitions="auto,*">
+                            <Image
+                                                        Grid.Column="0" 
+                                                        Source="flag.svg"
+                                                        Margin="10,0,0,0" />
+                            <Label 
+                                                        Grid.Column="1" 
+                                                        TextColor="White"
+                                                        Padding="10"
+                                                        Text="{Binding Title}"/>
+                        </Grid>
+                        <Grid  Grid.Column="1">
+                            <Image IsVisible="{Binding IsCompleted}" VerticalOptions="Center" HorizontalOptions="End" Margin="10" WidthRequest="20" Source="checkw.svg"/>
+
+                        </Grid>
+                    </Grid>
+                    <Grid 
+                                                ColumnDefinitions="auto,*"
+                                                Padding="15">
+                        <Grid>
+                            <BoxView 
+                                                        Grid.Column="0"
+                                                        HeightRequest="25"
+                                                        WidthRequest="25" 
+                                                        CornerRadius="50">
+                                <BoxView.Triggers>
+                                    <DataTrigger
+                                                                TargetType="BoxView"
+                                                                Binding="{Binding Priority}" 
+                                                                Value="Normal">
+                                        <Setter
+                                                                    Property="Background"
+                                                                    Value="#24A19C"/>
+                                    </DataTrigger>
+                                    <DataTrigger 
+                                                                TargetType="BoxView" 
+                                                                Binding="{Binding Priority}"
+                                                                Value="Low">
+                                        <Setter
+                                                                    Property="Background" 
+                                                                    Value="#DFD8F7"/>
+                                    </DataTrigger>
+                                    <DataTrigger 
+                                                                TargetType="BoxView"
+                                                                Binding="{Binding Priority}"
+                                                                Value="High">
+                                        <Setter 
+                                                                    Property="Background"
+                                                                    Value="#EA4335"/>
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+                            <BoxView 
+                                                        Grid.Column="0"
+                                                        HeightRequest="20"
+                                                        WidthRequest="20"
+                                                        Background="White"
+                                                        CornerRadius="50">
+
+                            </BoxView>
+                            <BoxView Grid.Column="0" HeightRequest="15" WidthRequest="15" CornerRadius="50">
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Normal">
+                                        <Setter Property="Background" Value="#24A19C"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="Low">
+                                        <Setter Property="Background" Value="#DFD8F7"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding Priority}" Value="High">
+                                        <Setter Property="Background" Value="#EA4335"/>
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+                        </Grid>
+
+                        <Label Margin="10,0" Grid.Column="1" TextColor="Black" VerticalTextAlignment="Center" FontSize="14" Text="{Binding Description}">
+
+                        </Label>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" Padding="10,0,10,10">
+                        <BoxView Grid.ColumnSpan="2" Grid.Row="0" HeightRequest="0.5" />
+                        <Grid ColumnSpacing="5" ColumnDefinitions="auto,*" Grid.Row="1" Margin="0,10,0,0" Grid.Column="0">
+                            <Image Source="alarm.svg" HorizontalOptions="Start" Grid.Column="0"/>
+                            <Label HorizontalOptions="Start" TextColor="#EA4335" Grid.Column="1" Margin="0,0,0,0" FontSize="14" Text="{Binding DueTime, StringFormat='{0: hh:mm tt}'}"/>
+                        </Grid>
+                        <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Gray" Margin="0,10,0,0" FontSize="14" Text="{Binding DueDate, StringFormat='{0:ddd, dd MMM yyyy}'}"/>
+                    </Grid>
+                </StackLayout>
+            </Border>
+        </Grid>
+    </SwipeView> 
+    </Grid>
+
+</ContentView>

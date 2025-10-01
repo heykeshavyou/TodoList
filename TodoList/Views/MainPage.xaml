@@ -6,13 +6,11 @@
              xmlns:models="clr-namespace:TodoList.Models"
              x:DataType="HM:HomeViewModel"
              x:Name="homepage"
-xmlns:templates="clr-namespace:TodoList.Datatemplates"
+             xmlns:cc="clr-namespace:TodoList.CustomControl"
              Background="#ffffff" NavigationPage.HasNavigationBar="False"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              >
-    <ContentPage.Resources>
-        <templates:TaskDataTemplate x:Key="TaskTemplate"/>
-    </ContentPage.Resources>
+
         <Grid
         RowDefinitions="*,auto"
         Padding="10,0">
@@ -31,7 +29,15 @@ xmlns:templates="clr-namespace:TodoList.Datatemplates"
                 <CollectionView 
                     IsVisible="{Binding ShowLoading ,Converter={toolkit:InvertedBoolConverter}}" 
                     ItemsSource="{Binding TodoItems}" 
-                    ItemTemplate="{StaticResource TaskTemplate}">
+                    >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <cc:Card
+                                DeleteCommand="{Binding Delete}"
+                                Todo="{Binding .}" 
+                                Margin="0,0,0,10"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
