@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TodoList.Views.Create"
              NavigationPage.HasNavigationBar="False"
+             
              Background="White" 
-             Title="Create"
              x:Name="CreatePage"
              xmlns:vm="clr-namespace:TodoList.ViewModels"
              x:DataType="vm:CreateViewModel"
@@ -70,7 +70,7 @@
         <StackLayout Grid.Row="1" Padding="0,0,0,10" VerticalOptions="End">
             <Grid ColumnDefinitions="*,*">
                 <Border Stroke="#24A19C" Grid.Column="0"  StrokeShape="RoundRectangle 10" Margin="10,5">
-                    <Button Background="Transparent" Text="Cancel" FontAttributes="Bold"/>
+                    <Button Background="Transparent" Text="Cancel" FontAttributes="Bold" Command="{Binding Cancel}"/>
                 </Border>
                 <Border  Stroke="#24A19C" Grid.Column="1"  StrokeShape="RoundRectangle 10" Margin="10,5">
                     <Button  Text="Save" FontAttributes="Bold" Command="{Binding SaveCommand}"/>

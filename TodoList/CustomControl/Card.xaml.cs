@@ -8,10 +8,7 @@ public partial class Card : ContentView
     public Card()
     {
         InitializeComponent();
-    }
-    protected override void OnBindingContextChanged()
-    {
-        var a = BindingContext;
+        var sync = BindingContext;
     }
     private static BindableProperty TodoProperty = BindableProperty.Create(
         nameof(Todo),
@@ -34,7 +31,7 @@ public partial class Card : ContentView
     private static BindableProperty DeleteCommandProperty = BindableProperty.Create(
         nameof(DeleteCommand),
         typeof(ICommand),
-        typeof(Card));
+        typeof(Card), defaultBindingMode: BindingMode.TwoWay, defaultValue: null);
     public ICommand DeleteCommand
         {
         get => (ICommand)GetValue(DeleteCommandProperty);

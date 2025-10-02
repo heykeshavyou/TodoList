@@ -15,8 +15,8 @@
                          >
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer 
-                                Command="{Binding Source={x:Reference card}, Path=DeleteCommand ,Mode=TwoWay}"
-                                CommandParameter="{Binding Source={x:Reference card}, Path=Todo.Id }" />
+                                Command="{Binding Source={x:Reference card}, Path=DeleteCommand}"
+                                />
                         </Grid.GestureRecognizers>
                         <Image 
                                                     ZIndex="1"
@@ -43,7 +43,7 @@
                         </BoxView>
                     </Grid>
                 </SwipeItemView>
-                <SwipeItemView IsVisible="{Binding IsCompleted, Converter={toolkit:InvertedBoolConverter}}"  >
+                <SwipeItemView IsVisible="{Binding IsCompleted , Converter={toolkit:InvertedBoolConverter}}"  >
                     <Grid Padding="5" Margin="5">
 
                         <Image 

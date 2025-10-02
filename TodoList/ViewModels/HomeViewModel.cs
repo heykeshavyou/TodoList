@@ -17,6 +17,7 @@ namespace TodoList.ViewModels
             Delete = new Command<int>(DeleteTodo);
             GotoEdit = new Command<int>(Goto);
             Mark = new Command<int>(MarkTodo);
+            GotoPage = new Command<string>(Goto);
         }
         public bool ShowLoading
         {
@@ -54,6 +55,7 @@ namespace TodoList.ViewModels
         public ICommand GotoCreate { get; }
         public ICommand Delete { get; }
         public ICommand Mark { get; }
+        public ICommand GotoPage { get; }
         private async void MarkTodo(int id)
         {
             var item = await _todoRepository.GetItemAsync(id);
@@ -88,6 +90,19 @@ namespace TodoList.ViewModels
             var edit = IPlatformApplication.Current.Services.GetService<Edit>();
             edit?.Id = id;
             App.Current.MainPage.Navigation.PushAsync(edit);
+        }
+        private void Goto(string page)
+        {
+            if (page == "upcoming")
+            {
+                var upcoming = IPlatformApplication.Current.Services.GetService<Upcoming>();
+                App.Current.MainPage.Navigation.PushAsync(upcoming);
+            }
+            else if (page == "completed")
+            {
+                var completed = IPlatformApplication.Current.Services.GetService<Completed>();
+                App.Current.MainPage.Navigation.PushAsync(completed);
+            }
         }
     }
 }

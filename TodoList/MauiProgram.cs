@@ -26,8 +26,12 @@ namespace TodoList
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<CreateViewModel>();
             builder.Services.AddTransient<EditViewModel>();
+            builder.Services.AddTransient<CompletedViewModel>();
+            builder.Services.AddTransient<UpcomingViewModel>();
 
             // Pages
+            builder.Services.AddTransient<Completed>();
+            builder.Services.AddTransient<Upcoming>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Create>();
             builder.Services.AddTransient<Edit>();

@@ -10,11 +10,11 @@
              Background="#ffffff" NavigationPage.HasNavigationBar="False"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              >
-
-        <Grid
+    <Grid
         RowDefinitions="*,auto"
-        Padding="10,0">
-        <ScrollView>
+        >
+        <ScrollView
+            Padding="10,0">
             <VerticalStackLayout >
                 <Label
                     Text="Today's"
@@ -41,16 +41,61 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
-        <Button Text="+" CornerRadius="50" Padding="0" 
-                        WidthRequest="50" HeightRequest="50"
-                        Margin="20,30"
-                        Background="#24A19C"
-                        TextColor="White"
-                        FontAttributes="Bold"
-                        FontSize="30" Command="{Binding GotoCreate,Mode=TwoWay}"
-                        HorizontalOptions="End"
-                        VerticalOptions="End"/>
-
+        <BoxView
+            BackgroundColor="White" 
+            HeightRequest="70"
+            VerticalOptions="End"
+            HorizontalOptions="Center"
+            WidthRequest="70"
+            CornerRadius="50"
+            Margin="20,25"
+            ZIndex="1"
+            >
+            
+        </BoxView>
+        <Button Text="+"
+                CornerRadius="50"
+                Padding="0" 
+                ZIndex="1"
+                WidthRequest="60" HeightRequest="60"
+                Margin="20,30"
+                Background="#24A19C"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="40" Command="{Binding GotoCreate,Mode=TwoWay}"
+                HorizontalOptions="Center"
+                VerticalOptions="End">
+            <Button.Shadow>
+                <Shadow Brush="Gray"
+                                     Offset="0,1"
+                                     Radius="5"
+                                     Opacity="0.7" />
+            </Button.Shadow>
+        </Button>
+        <Grid VerticalOptions="End"
+              Padding="10"
+              BackgroundColor="#24A19C" 
+              ColumnDefinitions="*,*,*">
+            <StackLayout Grid.Column="0">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GotoPage}" CommandParameter="upcoming"/>
+                </StackLayout.GestureRecognizers>
+                <Image Source="calendar.svg"
+                       WidthRequest="30"/>
+                <Label HorizontalOptions="Center" 
+                       Text="Upcoming"/>
+            </StackLayout>
+            <StackLayout Grid.Column="2">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GotoPage}" CommandParameter="completed"/>
+                </StackLayout.GestureRecognizers>
+                <Image
+                    Source="todone.svg"
+                    WidthRequest="30"/>
+                <Label HorizontalOptions="Center"
+                       Text="Completed"/>
+            </StackLayout>
+        </Grid>
     </Grid>
 
 </ContentPage>

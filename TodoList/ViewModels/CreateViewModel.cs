@@ -88,11 +88,14 @@ namespace TodoList.ViewModels
             }
         }
         public ICommand SaveCommand { get; }
+        public ICommand Cancel { get; }
         public CreateViewModel(TodoRepository todoRepository)
         {
             _todoRepository = todoRepository;
             SaveCommand = new Command(()=> OnSave());
+            Cancel = new Command(OnCancel);
         }
+
         private async Task OnSave()
         {
             var newItem = new TodoItem
@@ -106,6 +109,10 @@ namespace TodoList.ViewModels
                 CreatedAt = DateTime.Now
             };
             await _todoRepository.SaveItemAsync(newItem);
+            App.Current.MainPage.Navigation.PopAsync();
+        }
+        private void OnCancel()
+        {
             App.Current.MainPage.Navigation.PopAsync();
         }
     }
