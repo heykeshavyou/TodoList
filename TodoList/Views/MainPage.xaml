@@ -62,7 +62,9 @@
                 Background="#24A19C"
                 TextColor="White"
                 FontAttributes="Bold"
-                FontSize="40" Command="{Binding GotoCreate,Mode=TwoWay}"
+                FontSize="40"
+                Command="{Binding GotoPage}"
+                CommandParameter="create"
                 HorizontalOptions="Center"
                 VerticalOptions="End">
             <Button.Shadow>
@@ -78,7 +80,9 @@
               ColumnDefinitions="*,*,*">
             <StackLayout Grid.Column="0">
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding GotoPage}" CommandParameter="upcoming"/>
+                    <TapGestureRecognizer
+                        Command="{Binding GotoPage}" 
+                        CommandParameter="upcoming"/>
                 </StackLayout.GestureRecognizers>
                 <Image Source="calendar.svg"
                        WidthRequest="30"/>
@@ -87,7 +91,9 @@
             </StackLayout>
             <StackLayout Grid.Column="2">
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding GotoPage}" CommandParameter="completed"/>
+                    <TapGestureRecognizer
+                        Command="{Binding GotoPage}"
+                        CommandParameter="completed"/>
                 </StackLayout.GestureRecognizers>
                 <Image
                     Source="todone.svg"

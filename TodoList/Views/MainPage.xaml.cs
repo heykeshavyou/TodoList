@@ -1,5 +1,4 @@
-﻿using TodoList.Repositry;
-using TodoList.ViewModels;
+﻿using TodoList.ViewModels;
 
 namespace TodoList
 {

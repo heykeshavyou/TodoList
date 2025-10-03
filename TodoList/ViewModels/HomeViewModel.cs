@@ -13,11 +13,10 @@ namespace TodoList.ViewModels
         public HomeViewModel(TodoRepository todoRepository)
         {
             _todoRepository = todoRepository;
-            GotoCreate = new Command(Goto);
             Delete = new Command<int>(DeleteTodo);
             GotoEdit = new Command<int>(Goto);
             Mark = new Command<int>(MarkTodo);
-            GotoPage = new Command<string>(Goto);
+            GotoPage = new Command<string>(async (string a)=> await Goto(a));
         }
         public bool ShowLoading
         {
@@ -52,7 +51,6 @@ namespace TodoList.ViewModels
         }
 
         public ICommand GotoEdit { get; }
-        public ICommand GotoCreate { get; }
         public ICommand Delete { get; }
         public ICommand Mark { get; }
         public ICommand GotoPage { get; }
@@ -79,29 +77,30 @@ namespace TodoList.ViewModels
                 }
             }
         }
-        private void Goto()
-        {
-            var create = IPlatformApplication.Current.Services.GetService<Create>();
-
-            App.Current.MainPage.Navigation.PushAsync(create);
-        }
         private void Goto(int id)
         {
             var edit = IPlatformApplication.Current.Services.GetService<Edit>();
             edit?.Id = id;
             App.Current.MainPage.Navigation.PushAsync(edit);
         }
-        private void Goto(string page)
+        private async Task Goto(string page)
         {
-            if (page == "upcoming")
+            switch (page)
             {
-                var upcoming = IPlatformApplication.Current.Services.GetService<Upcoming>();
-                App.Current.MainPage.Navigation.PushAsync(upcoming);
-            }
-            else if (page == "completed")
-            {
-                var completed = IPlatformApplication.Current.Services.GetService<Completed>();
-                App.Current.MainPage.Navigation.PushAsync(completed);
+                case "upcoming":
+                    var upcoming = IPlatformApplication.Current.Services.GetService<Upcoming>();
+                    await App.Current.MainPage.Navigation.PushAsync(upcoming);
+                    break;
+                case "completed":
+                    var completed = IPlatformApplication.Current.Services.GetService<Completed>();
+                    await App.Current.MainPage.Navigation.PushAsync(completed);
+                    break;
+                case "create":
+                    var create = IPlatformApplication.Current.Services.GetService<Create>();
+                    await App.Current.MainPage.Navigation.PushAsync(create);
+                    break;
+                default:
+                    break;
             }
         }
     }

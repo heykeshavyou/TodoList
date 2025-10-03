@@ -30,11 +30,11 @@ namespace TodoList
             builder.Services.AddTransient<UpcomingViewModel>();
 
             // Pages
-            builder.Services.AddTransient<Completed>();
-            builder.Services.AddTransient<Upcoming>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<Create>();
             builder.Services.AddTransient<Edit>();
+            builder.Services.AddTransient<Completed>();
+            builder.Services.AddTransient<Upcoming>();
             PickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
             {
                 #if ANDROID
