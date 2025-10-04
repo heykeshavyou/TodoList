@@ -109,11 +109,11 @@ namespace TodoList.ViewModels
                 CreatedAt = DateTime.Now
             };
             await _todoRepository.SaveItemAsync(newItem);
-            App.Current.MainPage.Navigation.PopAsync();
+            App.Current.Windows[0].Page.Navigation.PopAsync();
         }
         private void OnCancel()
         {
-            App.Current.MainPage.Navigation.PopAsync();
+            App.Current.Windows[0].Page.Navigation.PopAsync();
         }
     }
 }

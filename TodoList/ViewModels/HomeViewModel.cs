@@ -16,7 +16,7 @@ namespace TodoList.ViewModels
             Delete = new Command<int>(DeleteTodo);
             GotoEdit = new Command<int>(Goto);
             Mark = new Command<int>(MarkTodo);
-            GotoPage = new Command<string>(async (string a)=> await Goto(a));
+            GotoPage = new Command<string>(async (string a) => await Goto(a));
         }
         public bool ShowLoading
         {
@@ -69,7 +69,7 @@ namespace TodoList.ViewModels
             var item = await _todoRepository.GetItemAsync(id);
             if (item != null)
             {
-                var result = await App.Current.MainPage.DisplayAlertAsync("Delete", $"Are you sure you want to delete {item.Title.Trim()} ?", "Yes", "No");
+                var result = await App.Current.Windows[0].Page.DisplayAlertAsync("Delete", $"Are you sure you want to delete {item.Title.Trim()} ?", "Yes", "No");
                 if (result)
                 {
                     await _todoRepository.DeleteItemAsync(item);
@@ -81,7 +81,7 @@ namespace TodoList.ViewModels
         {
             var edit = IPlatformApplication.Current.Services.GetService<Edit>();
             edit?.Id = id;
-            App.Current.MainPage.Navigation.PushAsync(edit);
+            App.Current.Windows[0].Page.Navigation.PushAsync(edit);
         }
         private async Task Goto(string page)
         {
@@ -89,15 +89,19 @@ namespace TodoList.ViewModels
             {
                 case "upcoming":
                     var upcoming = IPlatformApplication.Current.Services.GetService<Upcoming>();
-                    await App.Current.MainPage.Navigation.PushAsync(upcoming);
+                    //await App.Current.MainPage.Navigation.PushAsync(upcoming);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(upcoming);
                     break;
                 case "completed":
                     var completed = IPlatformApplication.Current.Services.GetService<Completed>();
-                    await App.Current.MainPage.Navigation.PushAsync(completed);
+                    //await App.Current.MainPage.Navigation.PushAsync(completed);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(completed);
+
                     break;
                 case "create":
                     var create = IPlatformApplication.Current.Services.GetService<Create>();
-                    await App.Current.MainPage.Navigation.PushAsync(create);
+                    // await App.Current.MainPage.Navigation.PushAsync(create);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(create);
                     break;
                 default:
                     break;

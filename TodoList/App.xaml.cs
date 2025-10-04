@@ -7,8 +7,11 @@ namespace TodoList
         public App()
         {
             InitializeComponent();
+        }
+        protected override Window CreateWindow(IActivationState activationState)
+        {
             var mainPage = IPlatformApplication.Current.Services.GetService<MainPage>();
-            MainPage = new NavigationPage(mainPage);
+            return new Window(new NavigationPage(mainPage));
         }
     }
 }

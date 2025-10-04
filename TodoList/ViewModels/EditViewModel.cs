@@ -121,7 +121,7 @@ namespace TodoList.ViewModels
         {
             _todoRepository = todoRepository;
             UpdateCommand = new Command(async () => await Update());
-            Cancel= new Command(async () => await App.Current.MainPage.Navigation.PopAsync());
+            Cancel= new Command(async () => await App.Current.Windows[0].Page.Navigation.PopAsync());
         }
         public ICommand UpdateCommand { get; }
         public ICommand Cancel{ get; }
@@ -153,7 +153,7 @@ namespace TodoList.ViewModels
                 Priority = (Priority)Enum.Parse(typeof(Priority), this.PriorityText)
             };
             await _todoRepository.SaveItemAsync(item);
-            await App.Current.MainPage.Navigation.PopAsync();
+            await App.Current.Windows[0].Page.Navigation.PopAsync();
         }
     }
 }
