@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using TodoList.Repositry;
 
 namespace TodoList.ViewModels
 {
-    internal class BaseTaskViewModel
+    public class BaseTaskViewModel:BindableObject
     {
+        public readonly TodoRepository _todoRepository;
+        public BaseTaskViewModel(TodoRepository todoRepository)
+        {
+            _todoRepository = todoRepository;
+        }
     }
 }

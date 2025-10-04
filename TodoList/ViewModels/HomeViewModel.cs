@@ -32,7 +32,8 @@ namespace TodoList.ViewModels
         }
         public async Task OnAppearing()
         {
-            TodoItems = await _todoRepository.GetItemsAsync();
+            var res = await _todoRepository.GetItemsAsync();
+            TodoItems= res.Where(x=>x.DueDate.Value.Date==DateTime.Today.Date).ToList();
             ShowLoading = false;
         }
         private List<TodoItem> _todoItems;
@@ -81,7 +82,7 @@ namespace TodoList.ViewModels
         {
             var edit = IPlatformApplication.Current.Services.GetService<Edit>();
             edit?.Id = id;
-            App.Current.Windows[0].Page.Navigation.PushAsync(edit);
+            App.Current.Windows[0].Page.Navigation.PushAsync(edit, true);
         }
         private async Task Goto(string page)
         {
@@ -90,18 +91,18 @@ namespace TodoList.ViewModels
                 case "upcoming":
                     var upcoming = IPlatformApplication.Current.Services.GetService<Upcoming>();
                     //await App.Current.MainPage.Navigation.PushAsync(upcoming);
-                    await App.Current.Windows[0].Page.Navigation.PushAsync(upcoming);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(upcoming,true);
                     break;
                 case "completed":
                     var completed = IPlatformApplication.Current.Services.GetService<Completed>();
                     //await App.Current.MainPage.Navigation.PushAsync(completed);
-                    await App.Current.Windows[0].Page.Navigation.PushAsync(completed);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(completed,true);
 
                     break;
                 case "create":
                     var create = IPlatformApplication.Current.Services.GetService<Create>();
                     // await App.Current.MainPage.Navigation.PushAsync(create);
-                    await App.Current.Windows[0].Page.Navigation.PushAsync(create);
+                    await App.Current.Windows[0].Page.Navigation.PushAsync(create,true);
                     break;
                 default:
                     break;

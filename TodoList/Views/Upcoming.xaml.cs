@@ -4,9 +4,15 @@ namespace TodoList.Views;
 
 public partial class Upcoming : ContentPage
 {
-	public Upcoming(UpcomingViewModel vm)
+	private readonly UpcomingViewModel _viewModel;
+    public Upcoming(UpcomingViewModel vm)
 	{
 		InitializeComponent();
-		BindingContext = vm;
+		BindingContext = _viewModel= vm;
     }
+	protected override async void OnAppearing()
+	{
+		await _viewModel.OnAppearing();
+    }
+
 }

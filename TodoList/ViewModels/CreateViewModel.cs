@@ -7,7 +7,7 @@ namespace TodoList.ViewModels
     public class CreateViewModel: BindableObject
     {
         public List<string> PriorityData { get; set; } = new List<string>() { "Normal", "High", "Low" };
-        public DateTime TodayDate { get; set; } =DateTime.Today;
+        public DateTime TodayDate { get; set; }=DateTime.Today;
         private readonly TodoRepository _todoRepository;
         private string _title;
         public string Title
@@ -113,7 +113,7 @@ namespace TodoList.ViewModels
         }
         private void OnCancel()
         {
-            App.Current.Windows[0].Page.Navigation.PopAsync();
+            App.Current.Windows[0].Page.Navigation.PopAsync(true);
         }
     }
 }

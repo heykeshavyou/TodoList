@@ -4,9 +4,14 @@ namespace TodoList.Views;
 
 public partial class Completed : ContentPage
 {
-	public Completed(CompletedViewModel vm)
-	{
-		InitializeComponent();
-		BindingContext = vm;
+    private readonly CompletedViewModel _viewModel;
+    public Completed(CompletedViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = _viewModel = vm;
+    }
+    protected override async void OnAppearing()
+    {
+        await _viewModel.OnAppearing();
     }
 }
