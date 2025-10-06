@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
+using Plugin.LocalNotification;
 using TodoList.Repositry;
+using TodoList.Service;
 using TodoList.ViewModels;
 using TodoList.Views;
 
@@ -15,6 +17,7 @@ namespace TodoList
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -35,6 +38,8 @@ namespace TodoList
             builder.Services.AddTransient<Edit>();
             builder.Services.AddTransient<Completed>();
             builder.Services.AddTransient<Upcoming>();
+            //Services
+            builder.Services.AddTransient<ISnackBarService, SnackBarService>();
             PickerHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
             {
                 #if ANDROID

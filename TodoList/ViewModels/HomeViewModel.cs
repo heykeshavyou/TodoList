@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
+using TodoList.Service;
 using TodoList.Views;
 
 namespace TodoList.ViewModels
@@ -9,14 +10,16 @@ namespace TodoList.ViewModels
     public class HomeViewModel : BindableObject
     {
         private readonly TodoRepository _todoRepository;
+        private readonly ISnackBarService _snackBarService;
         private bool _showLoading = true;
-        public HomeViewModel(TodoRepository todoRepository)
+        public HomeViewModel(TodoRepository todoRepository , ISnackBarService snackBarService)
         {
             _todoRepository = todoRepository;
             Delete = new Command<int>(DeleteTodo);
             GotoEdit = new Command<int>(Goto);
             Mark = new Command<int>(MarkTodo);
             GotoPage = new Command<string>(async (string a) => await Goto(a));
+            _snackBarService = snackBarService;
         }
         public bool ShowLoading
         {
@@ -62,7 +65,9 @@ namespace TodoList.ViewModels
             {
                 item.IsCompleted = !item.IsCompleted;
                 await _todoRepository.SaveItemAsync(item);
-                TodoItems = await _todoRepository.GetItemsAsync();
+                var res = await _todoRepository.GetItemsAsync();
+                TodoItems = res.Where(x => x.DueDate.Value.Date == DateTime.Today.Date).ToList();
+                _snackBarService.TaskCompleted();
             }
         }
         private async void DeleteTodo(int id)
@@ -74,7 +79,9 @@ namespace TodoList.ViewModels
                 if (result)
                 {
                     await _todoRepository.DeleteItemAsync(item);
-                    TodoItems = await _todoRepository.GetItemsAsync();
+                    var res = await _todoRepository.GetItemsAsync();
+                    TodoItems = res.Where(x => x.DueDate.Value.Date == DateTime.Today.Date).ToList();
+                    _snackBarService.TaskDeleted();
                 }
             }
         }

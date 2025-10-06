@@ -1,6 +1,10 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Plugin.LocalNotification;
+using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
+using TodoList.Service;
 
 namespace TodoList.ViewModels
 {
@@ -9,6 +13,7 @@ namespace TodoList.ViewModels
         public List<string> PriorityData { get; set; } = new List<string>() { "Normal", "High", "Low" };
         public DateTime TodayDate { get; set; }=DateTime.Today;
         private readonly TodoRepository _todoRepository;
+        private readonly ISnackBarService _snackBarService;
         private string _title;
         public string Title
         {
@@ -89,11 +94,12 @@ namespace TodoList.ViewModels
         }
         public ICommand SaveCommand { get; }
         public ICommand Cancel { get; }
-        public CreateViewModel(TodoRepository todoRepository)
+        public CreateViewModel(TodoRepository todoRepository,ISnackBarService snackBarService)
         {
             _todoRepository = todoRepository;
             SaveCommand = new Command(()=> OnSave());
             Cancel = new Command(OnCancel);
+            _snackBarService = snackBarService;
         }
 
         private async Task OnSave()
@@ -109,6 +115,7 @@ namespace TodoList.ViewModels
                 CreatedAt = DateTime.Now
             };
             await _todoRepository.SaveItemAsync(newItem);
+            _snackBarService.TaskCreated();
             App.Current.Windows[0].Page.Navigation.PopAsync();
         }
         private void OnCancel()

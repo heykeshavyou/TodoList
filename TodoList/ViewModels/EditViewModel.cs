@@ -5,12 +5,14 @@ using System.Text;
 using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
+using TodoList.Service;
 
 namespace TodoList.ViewModels
 {
     public class EditViewModel:BindableObject
     {
         private readonly TodoRepository _todoRepository;
+        private readonly ISnackBarService _snackBarService;
 
         public List<string> PriorityData { get; set; } = new List<string>() { "Normal", "High", "Low" };
         private string _priority;
@@ -117,11 +119,12 @@ namespace TodoList.ViewModels
                 }
             }
         }
-        public EditViewModel(TodoRepository todoRepository)
+        public EditViewModel(TodoRepository todoRepository,ISnackBarService snackBarService)
         {
             _todoRepository = todoRepository;
             UpdateCommand = new Command(async () => await Update());
             Cancel= new Command(async () => await App.Current.Windows[0].Page.Navigation.PopAsync());
+            _snackBarService = snackBarService;
         }
         public ICommand UpdateCommand { get; }
         public ICommand Cancel{ get; }
@@ -153,6 +156,7 @@ namespace TodoList.ViewModels
                 Priority = (Priority)Enum.Parse(typeof(Priority), this.PriorityText)
             };
             await _todoRepository.SaveItemAsync(item);
+            _snackBarService.TaskUpdated();
             await App.Current.Windows[0].Page.Navigation.PopAsync();
         }
     }

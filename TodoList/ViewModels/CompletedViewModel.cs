@@ -1,17 +1,19 @@
 ﻿using System.Windows.Input;
 using TodoList.Models;
 using TodoList.Repositry;
+using TodoList.Service;
 
 namespace TodoList.ViewModels
 {
     public class CompletedViewModel: BindableObject
     {
         private readonly TodoRepository _todoRepository;
-        public CompletedViewModel(TodoRepository todoRepository)
+        private readonly ISnackBarService _snackBarService;
+        public CompletedViewModel(TodoRepository todoRepository, ISnackBarService snackBarService)
         {
             _todoRepository = todoRepository;
             Delete = new Command<int>(DeleteTodo);
-
+            _snackBarService = snackBarService;
         }
         private List<TodoItem> _todoItems;
         private bool _showLoading = true;
@@ -56,7 +58,9 @@ namespace TodoList.ViewModels
                 if (result)
                 {
                     await _todoRepository.DeleteItemAsync(item);
-                    TodoItems = await _todoRepository.GetItemsAsync();
+                    var res = await _todoRepository.GetItemsAsync();
+                    TodoItems = res.Where(x => x.IsCompleted).ToList();
+                    _snackBarService.TaskDeleted();
                 }
             }
         }
